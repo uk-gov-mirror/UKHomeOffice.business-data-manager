@@ -83,7 +83,7 @@ spec:
                 name: dq-business-data-manager
                 key: KEYCLOAK_CLIENT_SECRET
           - name: PROXY_LISTEN
-            value: 0.0.0.0:80
+            value: 0.0.0.0:8081
           - name: PROXY_DISCOVERY_URL
             valueFrom:
               secretKeyRef:
