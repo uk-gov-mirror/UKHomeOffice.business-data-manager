@@ -83,14 +83,14 @@ spec:
                 name: dq-business-data-manager
                 key: KEYCLOAK_CLIENT_SECRET
           - name: PROXY_LISTEN
-            value: 0.0.0.0:8080
+            value: 0.0.0.0:80
           - name: PROXY_DISCOVERY_URL
             valueFrom:
               secretKeyRef:
                 name: dq-business-data-manager
                 key: KEYCLOAK_DISCOVERY
           - name: PROXY_UPSTREAM_URL
-            value: http://127.0.0.1:80
+            value: http://127.0.0.1:8080
         args:
           - --enable-logging
           - --enable-json-logging
