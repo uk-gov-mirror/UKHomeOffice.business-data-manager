@@ -1,9 +1,7 @@
 pipeline:
 
   build:
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
-    image: registry.hub.docker.com/plugins/docker
+    image: ukhomeoffice/drone-docker
     repo: quay.io/ukhomeofficedigital/business-data-manager
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD ]
     context: .
@@ -16,61 +14,61 @@ pipeline:
     when:
       event: push
 
-  deploy_to_dev:
-    image: quay.io/ukhomeofficedigital/kd:latest
-    environment:
-      - KUBE_NAMESPACE=dq-apps-notprod
-      - INSECURE_SKIP_TLS_VERIFY=true
-    commands:
-      - export NODE_ENV=$$NODE_ENV
-      - export LOG_LEVEL=$$LOG_LEVEL
-      - export HOSTNAME=$$NOTPROD_HOSTNAME
-      - export KEYCLOAK_CLIENT_ID=$$NOTPROD_KEYCLOAK_CLIENT_ID
-      - export KEYCLOAK_CLIENT_SECRET=$$NOTPROD_KEYCLOAK_CLIENT_SECRET
-      - export KEYCLOAK_DISCOVERY=$$NOTPROD_KEYCLOAK_DISCOVERY
-      - export KUBE_SERVER=$$NOTPROD_KUBE_SERVER
-      - export KUBE_TOKEN=$$NOTPROD_KUBE_TOKEN
-      - export RDS_SECRET_NAME=dq-apps-notprod-postgres-rds
-      - export DB_ATTRIBUTE=database_name
-      - kd -f kube/secret.yml -f kube/deployment.yml -f kube/service.yml -f kube/ingress.yml -f kube/network-policy.yml
-    secrets:
-      - NOTPROD_HOSTNAME
-      - NODE_ENV
-      - LOG_LEVEL
-      - NOTPROD_KEYCLOAK_CLIENT_ID
-      - NOTPROD_KEYCLOAK_CLIENT_SECRET
-      - NOTPROD_KEYCLOAK_DISCOVERY
-      - NOTPROD_KUBE_SERVER
-      - NOTPROD_KUBE_TOKEN
-    when:
-      event: push
-
-  deploy_to_prod:
-    image: quay.io/ukhomeofficedigital/kd:latest
-    environment:
-      - KUBE_NAMESPACE=dq-apps
-      - INSECURE_SKIP_TLS_VERIFY=true
-    commands:
-      - export NODE_ENV=$$NODE_ENV
-      - export LOG_LEVEL=$$LOG_LEVEL
-      - export HOSTNAME=$$PROD_HOSTNAME
-      - export KEYCLOAK_CLIENT_ID=$$PROD_KEYCLOAK_CLIENT_ID
-      - export KEYCLOAK_CLIENT_SECRET=$$PROD_KEYCLOAK_CLIENT_SECRET
-      - export KEYCLOAK_DISCOVERY=$$PROD_KEYCLOAK_DISCOVERY
-      - export KUBE_SERVER=$$PROD_KUBE_SERVER
-      - export KUBE_TOKEN=$$PROD_KUBE_TOKEN
-      - export RDS_SECRET_NAME=dq-apps-bdm-prod-rds
-      - export DB_ATTRIBUTE=db_name
-      - kd -f kube/secret.yml -f kube/deployment.yml -f kube/service.yml -f kube/ingress.yml -f kube/network-policy.yml
-    secrets:
-      - NODE_ENV
-      - LOG_LEVEL
-      - PROD_HOSTNAME
-      - PROD_KEYCLOAK_CLIENT_ID
-      - PROD_KEYCLOAK_CLIENT_SECRET
-      - PROD_KEYCLOAK_DISCOVERY
-      - PROD_KUBE_SERVER
-      - PROD_KUBE_TOKEN
-    when:
-      environment: production
-      event: deployment
+  # deploy_to_dev:
+  #   image: quay.io/ukhomeofficedigital/kd:latest
+  #   environment:
+  #     - KUBE_NAMESPACE=dq-apps-notprod
+  #     - INSECURE_SKIP_TLS_VERIFY=true
+  #   commands:
+  #     - export NODE_ENV=$$NODE_ENV
+  #     - export LOG_LEVEL=$$LOG_LEVEL
+  #     - export HOSTNAME=$$NOTPROD_HOSTNAME
+  #     - export KEYCLOAK_CLIENT_ID=$$NOTPROD_KEYCLOAK_CLIENT_ID
+  #     - export KEYCLOAK_CLIENT_SECRET=$$NOTPROD_KEYCLOAK_CLIENT_SECRET
+  #     - export KEYCLOAK_DISCOVERY=$$NOTPROD_KEYCLOAK_DISCOVERY
+  #     - export KUBE_SERVER=$$NOTPROD_KUBE_SERVER
+  #     - export KUBE_TOKEN=$$NOTPROD_KUBE_TOKEN
+  #     - export RDS_SECRET_NAME=dq-apps-notprod-postgres-rds
+  #     - export DB_ATTRIBUTE=database_name
+  #     - kd -f kube/secret.yml -f kube/deployment.yml -f kube/service.yml -f kube/ingress.yml -f kube/network-policy.yml
+  #   secrets:
+  #     - NOTPROD_HOSTNAME
+  #     - NODE_ENV
+  #     - LOG_LEVEL
+  #     - NOTPROD_KEYCLOAK_CLIENT_ID
+  #     - NOTPROD_KEYCLOAK_CLIENT_SECRET
+  #     - NOTPROD_KEYCLOAK_DISCOVERY
+  #     - NOTPROD_KUBE_SERVER
+  #     - NOTPROD_KUBE_TOKEN
+  #   when:
+  #     event: push
+  #
+  # deploy_to_prod:
+  #   image: quay.io/ukhomeofficedigital/kd:latest
+  #   environment:
+  #     - KUBE_NAMESPACE=dq-apps
+  #     - INSECURE_SKIP_TLS_VERIFY=true
+  #   commands:
+  #     - export NODE_ENV=$$NODE_ENV
+  #     - export LOG_LEVEL=$$LOG_LEVEL
+  #     - export HOSTNAME=$$PROD_HOSTNAME
+  #     - export KEYCLOAK_CLIENT_ID=$$PROD_KEYCLOAK_CLIENT_ID
+  #     - export KEYCLOAK_CLIENT_SECRET=$$PROD_KEYCLOAK_CLIENT_SECRET
+  #     - export KEYCLOAK_DISCOVERY=$$PROD_KEYCLOAK_DISCOVERY
+  #     - export KUBE_SERVER=$$PROD_KUBE_SERVER
+  #     - export KUBE_TOKEN=$$PROD_KUBE_TOKEN
+  #     - export RDS_SECRET_NAME=dq-apps-bdm-prod-rds
+  #     - export DB_ATTRIBUTE=db_name
+  #     - kd -f kube/secret.yml -f kube/deployment.yml -f kube/service.yml -f kube/ingress.yml -f kube/network-policy.yml
+  #   secrets:
+  #     - NODE_ENV
+  #     - LOG_LEVEL
+  #     - PROD_HOSTNAME
+  #     - PROD_KEYCLOAK_CLIENT_ID
+  #     - PROD_KEYCLOAK_CLIENT_SECRET
+  #     - PROD_KEYCLOAK_DISCOVERY
+  #     - PROD_KUBE_SERVER
+  #     - PROD_KUBE_TOKEN
+  #   when:
+  #     environment: production
+  #     event: deployment
