@@ -72,29 +72,11 @@ spec:
           limits:
             cpu: 100m
             memory: 100Mi
-        env:
-          - name: PROXY_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                name: dq-business-data-manager
-                key: KEYCLOAK_CLIENT_ID
-          - name: PROXY_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: dq-business-data-manager
-                key: KEYCLOAK_CLIENT_SECRET
-          - name: PROXY_LISTEN
-            value: 0.0.0.0:8081
-          - name: PROXY_DISCOVERY_URL
-            valueFrom:
-              secretKeyRef:
-                name: dq-business-data-manager
-                key: KEYCLOAK_DISCOVERY
-          - name: PROXY_UPSTREAM_URL
-            value: http://127.0.0.1:8080
         args:
-          - --resources
-          - uri=/*
+          - --client-secret={{ .KEYCLOAK_SECRET }}
+          - --discovery-url={{ .KEYCLOAK_DISCOVERY_URL }}
+          - --listen=0.0.0.0:8081
+          - --upstream-url=http://127.0.0.1:8080
           - --enable-logging
           - --enable-json-logging
           - --verbose
