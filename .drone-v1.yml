@@ -44,7 +44,7 @@ steps:
 
 - name: deploy_to_dev
   pull: if-not-exists
-  image: plugins/docker
+  image: quay.io/ukhomeofficedigital/kd
   commands:
   - export NODE_ENV=$$NODE_ENV
   - export LOG_LEVEL=$$LOG_LEVEL
@@ -94,7 +94,7 @@ steps:
 
 - name: deploy_to_prod
   pull: if-not-exists
-  image: plugins/docker
+  image: quay.io/ukhomeofficedigital/kd
   commands:
   environment:
       ENV: prod
