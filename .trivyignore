@@ -14,3 +14,4 @@ CVE-2024-28863    # node-tar DoS parsing (fixed in 6.2.1+)
 CVE-2026-24001    # diff DoS in parse/applyPatch (lower priority, but suppress if noisy)
 CVE-2023-42282    # ip arbitrary code exec in isPublic() (fixed in 2.0.1+)
 CVE-2022-25883    # semver ReDoS (fixed in 7.5.2+)
+

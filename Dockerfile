@@ -17,7 +17,9 @@ RUN npm config set unsafe-perm true
 
 WORKDIR $DOCKER_HOME
 COPY . ${DOCKER_HOME}
-RUN npm install --quite
+#RUN npm install --quite
+ENV NODE_ENV=production
+RUN npm ci --omit=dev --quiet
 RUN chown -R node ${DOCKER_HOME}
 EXPOSE 8080
 
